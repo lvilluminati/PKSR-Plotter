@@ -64,9 +64,9 @@ PSK Reporter is kind enough to allow access to their reporting data via API. The
 I developed this to plot my own signal reception reports mainly to animate and see how band conditions change over time. I am sure there are other, better solutions for this out there. I am not a professional coder, more of a hobyist but I am releasing this in case it is helpful to anyone else. I know the code is messy, but please feel free to add any features or modifications and submit a pull request.
 
 ## Todo:
+- [ ] Separate all reused functions across the scripts into a single file and use an import. (Started)
 - [ ] Finish documenting code.
 - [ ] Clean up code.
-- [ ] Separate all reused functions across the scripts into a single file and use an import.
 - [ ] Finish pskr-plot-continuous.py
 - [ ] Add support or start a new project to use interactive maps.
 
