@@ -21,19 +21,15 @@ from cartopy import feature as cfeature
 from datetime import datetime, timezone
 from pathlib import Path
 from numpy import interp
+import pskrfunctions as pskr
 
 # Get current date and time in UTC
 current_date = datetime.now(timezone.utc)
 
-# USER CONFIGURATION
-# Set your callsign here
-myCallsign = 'YOUR_CALLSIGN'
-# Set your locator here (optional, can be derived from callsign) Note: Not currently used in this script
-myLocator = 'YOUR_GRIDSQUARE_LOCATOR' # Supports 6 character Maidenhead locator, possibly up to 8
-# Set the time resolution here (in NEGATIVE seconds) for the PSK Reporter query, default is -300 seconds (5 minutes)
-requestTime = -300
+# Check if the required user configuration is set
+pskr.check_user_config()
 
-#Cartopy Map Options
+# Cartopy Map Options
 # You can set the map projection to something else if you prefer, e.g., PlateCarree(), Mercator(), etc. See Cartopy documentation for more options.
 projection = ccrs.Robinson()
 # Moved down to For loop to ensure the time is correct from the XML file used in Nightshade.

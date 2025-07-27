@@ -17,7 +17,7 @@ This is for amateur radio (ham) operators that use any of the [WJST](https://wsj
 
 ## Usage:
 
-There are four versions of these scripts for different methods of usage:
+There are four versions of these scripts for different methods of usage. **Make sure you put your callsign and Maidenhead locator in the pskrfunctions.py file before using these scripts**
 
 - **pskr-plot-singlerun.py**
 

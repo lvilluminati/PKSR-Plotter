@@ -21,20 +21,16 @@ from cartopy.feature.nightshade import Nightshade as cnightshade
 from cartopy import feature as cfeature
 from datetime import datetime, timezone
 from numpy import interp
+import pskrfunctions as pskr
 
 current_date = datetime.now(timezone.utc)
 
-# USER CONFIGURATION
-# Set your callsign here
-myCallsign = 'YOUR_CALLSIGN'
-# Set your locator here (optional, can be derived from callsign) Note: Not currently used in this script
-myLocator = 'YOUR_GRIDSQUARE_LOCATOR' # Supports 6 character Maidenhead locator, possibly up to 8
-# Set the time resolution here (in NEGATIVE seconds) for the PSK Reporter query, default is -300 seconds (5 minutes)
-requestTime = -300
+# Check if the required user configuration is set
+pskr.check_user_config()
 
 #Cartopy Map Options
 # You can set the map projection to something else if you prefer, e.g., PlateCarree(), Mercator(), etc. See Cartopy documentation for more options.
-projection = ccrs.Robinson()
+projection = pskr.projection
 nightshade = cnightshade(date=current_date, alpha=0.2, facecolor='black')
 
 #Plot Setup and Options
@@ -89,7 +85,7 @@ def get_marker_transparency(frequency, snr):
 
 # Function to fetch signal reports from PSK Reporter directly from the API
 def getSignalReports():
-    url = f"https://retrieve.pskreporter.info/query?receiverCallsign={myCallsign}&statistics=1&noactive=1&nolocator=0&flowStartSeconds={requestTime}"
+    url = f"https://retrieve.pskreporter.info/query?receiverCallsign={pskr.myCallsign}&statistics=1&noactive=1&nolocator=0&flowStartSeconds={pskr.requestTime}"
     print(url)
     response = requests.get(url)
     response.raise_for_status()
