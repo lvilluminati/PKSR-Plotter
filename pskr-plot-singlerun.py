@@ -62,8 +62,8 @@ for report in receptionReports:
 pskr.add_title_and_text(plt, ax, current_date)
 
 # Save the plot to the './plots/' directory with a timestamp
-plt.savefig(f"./plots/psk_reporter_signal_reports.{current_date.strftime('%Y-%m-%d-%H-%M-%Sz')}.png", bbox_inches='tight', dpi=300)
-print(f"Plot saved as psk_reporter_signal_reports.{current_date.strftime('%Y-%m-%d-%H-%M-%Sz')}.png")
+plt.savefig(f"./plots/psk_reporter_signal_reports.{pskr.format_datetime(current_date,'file')}.png", bbox_inches='tight', dpi=300)
+print(f"Plot saved as psk_reporter_signal_reports.{pskr.format_datetime(current_date,'file')}.png")
 
 # If you want to show the plot, uncomment the next line however this will block the script until you close the plot window.
 #plt.show()

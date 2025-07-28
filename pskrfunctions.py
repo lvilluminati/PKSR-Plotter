@@ -48,7 +48,7 @@ def check_user_config():
         print("Please set your callsign in pskrfunctions.py before running this script.")
         exit(1)
 
-def setup_plot(coastlinesResolution, coastlinesLineWidth, bordersLineWidth):
+def setup_plot(coastlinesResolution=coastlineBorderResolution, coastlinesLineWidth=coastlineBorderWidth, bordersLineWidth=countrylineBorderWidth):
     global ax, fig
     fig = plt.figure(figsize=(12, 8), dpi=100)
     ax = fig.add_subplot(1, 1, 1, projection=set_map_projection())
@@ -86,6 +86,16 @@ def parse_xml_file(xml_file):
 def get_time_from_xml(xml_file):
     xml_datetime = xml_file.stem.split('pskr-retrievedata-')[1]
     return datetime.strptime(xml_datetime, '%Y-%m-%dT%H-%M-%Sz')
+
+def format_datetime(thisDateTime, option='file'):
+    if option == 'file':
+        return thisDateTime.strftime('%Y-%m-%dT%H-%M-%Sz')
+    elif option == 'label':
+        return thisDateTime.strftime('%Y-%m-%d %H:%M:%S UTC')
+    elif option == 'console':
+        return thisDateTime.strftime('%Y-%m-%d %H:%M:%S')
+    else:
+        raise ValueError("Invalid option. Use 'file' or 'plot'.")
 
 # Returns a Hex color based on PSK Reporter band colors
 def getLineColor(frequency):
@@ -157,8 +167,8 @@ def plot_signal_path(ax, coords, QTHcoords, frequency, signal_strength):
     
     ax.plot([coords[0], QTHcoords[0]], [coords[1], QTHcoords[1]], 
             marker='o', color=getLineColor(frequency), markersize=3, linewidth=0.7, markeredgecolor='black', 
-            markerfacecolor=get_marker_transparency(frequency, signal_strength), transform=ccrs.Geodetic(), 
-            label='Signal Path')
+            markeredgewidth=0.5, markerfacecolor=get_marker_transparency(frequency, signal_strength),
+            transform=ccrs.Geodetic(), label='Signal Path')
 
 def plot_qth_locator(ax, QTHcoords):
     if QTHcoords is None:
