@@ -38,7 +38,7 @@ This script runs until you interrupt it with CTRL+C or a kill signal of some kin
 ## Helper Scripts:
 - **pskr-plot-retrievedata.sh**
 
-This script is meant to be run as a cronjob. It will fetch reception reports from PSK Reporter and output the result to a XML file with a timestamp in the file name. XML files are saved int eh directory pskr-xmldata
+This script is meant to be run as a cronjob. It will fetch reception reports from PSK Reporter and output the result to a XML file with a timestamp in the file name. XML files are saved in teh directory pskr-xmldata
 - **pskr-plot-animatepngs.sh** (requires ffmpeg or ImageMagick)
 
 This script animates all PNG files found in the plots directory to an animated GIF file.
