@@ -11,6 +11,7 @@ from datetime import datetime, timezone
 from numpy import interp
 import maidenhead as mh
 from matplotlib.offsetbox import AnchoredText
+import re
 
 
 ### USER CONFIGURATION, THIS IS REQUIRED ###
@@ -83,6 +84,31 @@ def parse_xml_file(xml_file):
         xml_string = file.read()
     return ET.fromstring(xml_string)
 
+def parse_xml_files(xml_files):
+    print(f"Parsing {len(xml_files)} XML files... THIS MAY TAKE A WHILE")
+    xml_string = ""
+    for xml_file in xml_files:
+        with open(xml_file, 'r') as file:
+            xml_string += file.read()
+    #print(xml_string)
+
+    ## This is a hacky way to remove the XML declaration and receptionReports tags ##
+    xmlParts = xml_string.rsplit('</receptionReports>', -1)
+    #print(str(len(xmlParts)) + " XML parts found.")
+    new_xml_string = ''
+    for i in range(0, len(xmlParts)):
+        #print ("Range:" + str(i))
+        if i == 0:
+            new_xml_string += xmlParts[i].replace('</receptionReports>', '')
+        else:
+            replacement = xmlParts[i].replace('<?xml version="1.0"?>', '').replace('</receptionReports>', '')
+            #new_xml_string += xmlParts[i].replace('<?xml version="1.0"?>', '').replace('</receptionReports>', '')
+            new_xml_string += re.sub(r'^<receptionReports currentSeconds=\"\d*\">', '', replacement, flags=re.MULTILINE|re.IGNORECASE)
+
+    new_xml_string += '</receptionReports>'
+
+    return ET.fromstring(new_xml_string)
+
 def get_time_from_xml(xml_file):
     xml_datetime = xml_file.stem.split('pskr-retrievedata-')[1]
     return datetime.strptime(xml_datetime, '%Y-%m-%dT%H-%M-%Sz')
@@ -152,7 +178,7 @@ def get_report_attributes(thisReport):
         return callsign, frequency, senderLocator, receiverLocator, signal_strength
 
 def get_lat_lon_from_locator(locator):
-    if len(locator) < 4 or locator is None:
+    if locator is None or len(locator) < 4:
         print(f"Invalid locator: {locator}. Locator must be at least 4 characters long.")
         return None, None
     else:

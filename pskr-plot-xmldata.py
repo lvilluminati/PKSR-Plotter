@@ -52,17 +52,25 @@ else:
             # Get the attributes from the a single reception report
             callsign, frequency, senderLocator, receiverLocator, signal_strength = pskr.get_report_attributes(report)
             
-            # Convert Maidenhead locator to longitude and latitude (This order is imprortant for plotting)
-            coords = pskr.get_lat_lon_from_locator(senderLocator)
-            # Convert configured QTH locator to latitude and longitude
-            QTHcoords = pskr.get_lat_lon_from_locator(receiverLocator)
+            if not (callsign and frequency and senderLocator and receiverLocator and signal_strength):
+                print("Skipping incomplete report.") # Print an exclamation mark if any of the attributes are missing
+                continue # If any atributes are missing, skip plotting this report
+            else: 
+                # Convert Maidenhead locator to longitude and latitude (This order is important for plotting)
+                coords = pskr.get_lat_lon_from_locator(senderLocator)
+                QTHcoords = pskr.get_lat_lon_from_locator(receiverLocator)
 
-            print(f"Callsign: {callsign}, Locator: {senderLocator}, Coordinates: {coords}, SNR: {signal_strength}")
-            print("Adding to map...")
+                # Convert Maidenhead locator to longitude and latitude (This order is imprortant for plotting)
+                coords = pskr.get_lat_lon_from_locator(senderLocator)
+                # Convert configured QTH locator to latitude and longitude
+                QTHcoords = pskr.get_lat_lon_from_locator(receiverLocator)
 
-            # Plot the signal path and QTH locator on the map
-            pskr.plot_signal_path(ax, coords, QTHcoords, frequency, signal_strength)
-            pskr.plot_qth_locator(ax, QTHcoords)
+                print(f"Callsign: {callsign}, Locator: {senderLocator}, Coordinates: {coords}, SNR: {signal_strength}")
+                print("Adding to map...")
+
+                # Plot the signal path and QTH locator on the map
+                pskr.plot_signal_path(ax, coords, QTHcoords, frequency, signal_strength)
+                pskr.plot_qth_locator(ax, QTHcoords)
 
         # Add title and text to the plot
         pskr.add_title_and_text(plt, ax, xml_datetime)
